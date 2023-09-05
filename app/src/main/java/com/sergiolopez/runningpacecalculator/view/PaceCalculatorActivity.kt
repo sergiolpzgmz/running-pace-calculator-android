@@ -1,23 +1,27 @@
-package com.sergiolopez.runningpacecalculator
+package com.sergiolopez.runningpacecalculator.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.slider.RangeSlider
 import com.sergiolopez.runningpacecalculator.databinding.ActivityPaceCalculatorBinding
+import com.sergiolopez.runningpacecalculator.viewModel.DataViewModel
 
 
 class PaceCalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaceCalculatorBinding
+    private lateinit var dataViewModel: DataViewModel
 
     private var distanceSelected: Int = 0;
-
-    private var currentValue: Int = 0
 
     private lateinit var rsDistance: RangeSlider
     private lateinit var tvCustomDistance: TextView
@@ -43,9 +47,11 @@ class PaceCalculatorActivity : AppCompatActivity() {
         binding = ActivityPaceCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initComponents();
-        initListeners();
+        dataViewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
+        initComponents()
+        initListeners()
+        initUI()
     }
 
     private fun initComponents() {
@@ -61,38 +67,70 @@ class PaceCalculatorActivity : AppCompatActivity() {
         btnCalculate = binding.btnCalculate
     }
 
+
     private fun initListeners() {
         rsDistance.addOnChangeListener { _, value, _ ->
-            currentValue = value.toInt()
-            distanceSelected = currentValue
-            tvCustomDistance.text = "$currentValue KM"
+            dataViewModel.setDistanceSelected(value.toInt())
 
         }
 
         btnDistance5.setOnClickListener {
-            tvCustomDistanceValue(5)
+            dataViewModel.setDistanceSelected(5)
         }
 
         btnDistance10.setOnClickListener {
-            tvCustomDistanceValue(10)
+            dataViewModel.setDistanceSelected(10)
         }
 
         btnDistance21.setOnClickListener {
-            tvCustomDistanceValue(21)
+            dataViewModel.setDistanceSelected(21)
         }
 
         btnDistance42.setOnClickListener {
-            tvCustomDistanceValue(42)
+            dataViewModel.setDistanceSelected(42)
         }
 
         btnCalculate.setOnClickListener {
-            val resultPeace = calculatePeace()
+            val resultPeace = dataViewModel.resultPace
+            setTimeValues()
             navigateToResultActivity(resultPeace)
         }
     }
 
-    private fun navigateToResultActivity(resultPeace: Float) {
-        if (distanceSelected == 0) {
+    private fun setTimeValues() {
+        if (etHours.text.toString() != "") dataViewModel.setHours(
+            etHours.text.toString().toFloat()
+        )
+
+        if (etMinutes.text.toString() != "") dataViewModel.setMinutes(
+            etMinutes.text.toString().toFloat()
+        )
+        else dataViewModel.setMinutes(0f)
+        if (etSeconds.text.toString() != "") dataViewModel.setSeconds(
+            etSeconds.text.toString().toFloat()
+        )
+        else dataViewModel.setSeconds(0f)
+
+        dataViewModel.hours.observe(this, Observer { hours ->
+            Log.d("sergioA", "horas->$hours")
+        })
+        dataViewModel.minutes.observe(this, Observer { hours ->
+            Log.d("sergioA", "minutos->$hours")
+        })
+        dataViewModel.seconds.observe(this, Observer { hours ->
+            Log.d("sergioA", "segundos->$hours")
+        })
+    }
+
+    private fun initUI() {
+        dataViewModel.distanceSelected.observe(this, Observer { distance ->
+            tvCustomDistance.text = "$distance KM"
+        })
+    }
+
+
+    private fun navigateToResultActivity(resultPeace: MutableLiveData<Float>) {
+        if (dataViewModel.distanceSelected.value == 0) {
             Toast.makeText(this, "Please, select a distance", Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent(this, ResultPaceCalculatorActivity::class.java)
@@ -100,39 +138,15 @@ class PaceCalculatorActivity : AppCompatActivity() {
         }
     }
 
-    private fun bundle(resultPeace: Float): Bundle {
+    private fun bundle(resultPeace: MutableLiveData<Float>): Bundle {
         val bundle = Bundle()
-        bundle.putFloat(KEY_RESULT, resultPeace)
-        bundle.putInt(KEY_DISTANCE, distanceSelected)
-        bundle.putString(KEY_HOURS, etHours.text.toString())
-        bundle.putString(KEY_MINUTES, etMinutes.text.toString())
-        bundle.putString(KEY_SECONDS, etSeconds.text.toString())
+        bundle.putFloat(KEY_RESULT, resultPeace.value!!.toFloat())
+        bundle.putInt(KEY_DISTANCE, dataViewModel.distanceSelected.value!!.toInt())
+        bundle.putString(KEY_HOURS, dataViewModel.hours.value.toString())
+        bundle.putString(KEY_MINUTES, dataViewModel.minutes.value.toString())
+        bundle.putString(KEY_SECONDS, dataViewModel.seconds.value.toString())
 
         return bundle
-
     }
-
-    private fun calculatePeace(): Float {
-
-        var hoursValue = etHours.text.toString()
-        var minutesValue = etMinutes.text.toString()
-        var secondsValue = etSeconds.text.toString()
-
-        if (hoursValue == "") hoursValue = "0"
-        if (minutesValue == "") minutesValue = "0"
-        if (secondsValue == "") secondsValue = "0"
-
-        // Convert all units to minutes
-        val hours: Float = hoursValue.toFloat() * 60
-        val seconds: Float = secondsValue.toFloat() / 60
-
-        return (hours + minutesValue.toFloat() + seconds) / distanceSelected
-    }
-
-    private fun tvCustomDistanceValue(value: Int) {
-        tvCustomDistance.text = "$value KM"
-        distanceSelected = value
-    }
-
 
 }

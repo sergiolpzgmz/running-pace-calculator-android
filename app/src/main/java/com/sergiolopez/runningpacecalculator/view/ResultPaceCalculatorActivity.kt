@@ -1,20 +1,23 @@
-package com.sergiolopez.runningpacecalculator
+package com.sergiolopez.runningpacecalculator.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import com.sergiolopez.runningpacecalculator.PaceCalculatorActivity.Companion.KEY_DISTANCE
-import com.sergiolopez.runningpacecalculator.PaceCalculatorActivity.Companion.KEY_HOURS
-import com.sergiolopez.runningpacecalculator.PaceCalculatorActivity.Companion.KEY_MINUTES
-import com.sergiolopez.runningpacecalculator.PaceCalculatorActivity.Companion.KEY_RESULT
-import com.sergiolopez.runningpacecalculator.PaceCalculatorActivity.Companion.KEY_SECONDS
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_DISTANCE
+import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_HOURS
+import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_MINUTES
+import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_RESULT
+import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_SECONDS
 import com.sergiolopez.runningpacecalculator.databinding.ActivityResultPaceCalculatorBinding
+import com.sergiolopez.runningpacecalculator.viewModel.DataViewModel
 import java.text.DecimalFormat
 
 class ResultPaceCalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultPaceCalculatorBinding
+    private lateinit var dataViewModel: DataViewModel
 
 
     private lateinit var tvResultPace: TextView
@@ -32,10 +35,12 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityResultPaceCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         extractIntent()
         initComponents()
         initListeners()
         initUI(result, distance)
+
     }
 
         private fun extractIntent() {
@@ -45,9 +50,6 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
             hours = intent.extras?.getString(KEY_HOURS).toString()
             minutes = intent.extras?.getString(KEY_MINUTES).toString()
             seconds = intent.extras?.getString(KEY_SECONDS).toString()
-
-            Log.d("sergio", minutes)
-
         }
 
         private fun initComponents() {
@@ -65,7 +67,6 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
             result: Float,
             distance: Int,
         ) {
-            Log.d("sergio",result.toString())
             val decimalFormat = DecimalFormat("#.##")
             tvResultPace.text = decimalFormat.format(result)
             tvResultPaceUnits.text = " min/km"
