@@ -91,9 +91,9 @@ class PaceCalculatorActivity : AppCompatActivity() {
         }
 
         btnCalculate.setOnClickListener {
-            val resultPeace = dataViewModel.resultPace
             setTimeValues()
-            navigateToResultActivity(resultPeace)
+            dataViewModel.calculatePace()
+            navigateToResultActivity(dataViewModel.resultPace)
         }
     }
 
@@ -110,16 +110,6 @@ class PaceCalculatorActivity : AppCompatActivity() {
             etSeconds.text.toString().toFloat()
         )
         else dataViewModel.setSeconds(0f)
-
-        dataViewModel.hours.observe(this, Observer { hours ->
-            Log.d("sergioA", "horas->$hours")
-        })
-        dataViewModel.minutes.observe(this, Observer { hours ->
-            Log.d("sergioA", "minutos->$hours")
-        })
-        dataViewModel.seconds.observe(this, Observer { hours ->
-            Log.d("sergioA", "segundos->$hours")
-        })
     }
 
     private fun initUI() {
