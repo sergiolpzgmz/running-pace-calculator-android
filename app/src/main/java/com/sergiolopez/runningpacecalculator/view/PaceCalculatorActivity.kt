@@ -3,7 +3,6 @@ package com.sergiolopez.runningpacecalculator.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -15,7 +14,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.slider.RangeSlider
 import com.sergiolopez.runningpacecalculator.databinding.ActivityPaceCalculatorBinding
 import com.sergiolopez.runningpacecalculator.viewModel.DataViewModel
-
 
 class PaceCalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaceCalculatorBinding
@@ -34,6 +32,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
     private lateinit var etSeconds: EditText
     private lateinit var btnCalculate: Button
 
+    // Keys associated with the values sent in the bundle
     companion object {
         const val KEY_RESULT = "PACE_RESULT"
         const val KEY_DISTANCE = "DISTANCE"
@@ -54,6 +53,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
         initUI()
     }
 
+    // Initialises the gui components
     private fun initComponents() {
         rsDistance = binding.rsDistance
         tvCustomDistance = binding.tvCustomDistance
@@ -69,9 +69,12 @@ class PaceCalculatorActivity : AppCompatActivity() {
 
 
     private fun initListeners() {
+        /*
+        * Gets the value of the range slider
+        * and assigns it to the corresponding attribute in the view model class
+        */
         rsDistance.addOnChangeListener { _, value, _ ->
             dataViewModel.setDistanceSelected(value.toInt())
-
         }
 
         btnDistance5.setOnClickListener {
@@ -97,6 +100,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
         }
     }
 
+    // Sets the value of the time attributes in the model view class
     private fun setTimeValues() {
         if (etHours.text.toString() != "") dataViewModel.setHours(
             etHours.text.toString().toFloat()
@@ -112,13 +116,18 @@ class PaceCalculatorActivity : AppCompatActivity() {
         else dataViewModel.setSeconds(0f)
     }
 
+    // Displays the user-selected distance
     private fun initUI() {
         dataViewModel.distanceSelected.observe(this, Observer { distance ->
             tvCustomDistance.text = "$distance KM"
         })
     }
 
-
+    /**
+     * Navigates to the result activity with all user inserted data
+     *
+     * @param resultPeace the calculation result of run pace
+     */
     private fun navigateToResultActivity(resultPeace: MutableLiveData<Float>) {
         if (dataViewModel.distanceSelected.value == 0) {
             Toast.makeText(this, "Please, select a distance", Toast.LENGTH_SHORT).show()
@@ -128,6 +137,13 @@ class PaceCalculatorActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Encapsulates all the data we get on this screen
+     *
+     * @param resultPeace the calculation result of run pace
+     *
+     * @return encapsulated data
+     */
     private fun bundle(resultPeace: MutableLiveData<Float>): Bundle {
         val bundle = Bundle()
         bundle.putFloat(KEY_RESULT, resultPeace.value!!.toFloat())
@@ -138,5 +154,4 @@ class PaceCalculatorActivity : AppCompatActivity() {
 
         return bundle
     }
-
 }

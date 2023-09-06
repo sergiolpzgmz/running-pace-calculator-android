@@ -1,10 +1,11 @@
 package com.sergiolopez.runningpacecalculator.viewModel
 
-import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sergiolopez.runningpacecalculator.model.RunPaceModel
 
 class DataViewModel : ViewModel() {
+
     val distanceSelected = MutableLiveData<Int>(0)
     var hours = MutableLiveData<Float>(0f)
     var minutes = MutableLiveData<Float>(0f)
@@ -27,18 +28,12 @@ class DataViewModel : ViewModel() {
     }
 
     fun calculatePace() {
-
+        val distance = distanceSelected.value ?: 0
         val hoursValue = hours.value ?: 0f
         val minutesValue = minutes.value ?: 0f
         val secondsValue = seconds.value ?: 0f
-        val distanceValue = distanceSelected.value?.toFloat() ?: 0f
 
-        // Convert all units to minutes
-        val totalMinutes = (hoursValue * 60) + minutesValue + (secondsValue / 60)
-
-        resultPace.value = totalMinutes / distanceValue
-
+        val runPaceModel = RunPaceModel(distance, hoursValue, minutesValue, secondsValue)
+        resultPace.value = runPaceModel.calculatePace()
     }
-
-
 }
