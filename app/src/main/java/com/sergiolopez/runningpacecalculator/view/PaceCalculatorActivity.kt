@@ -19,8 +19,6 @@ class PaceCalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaceCalculatorBinding
     private lateinit var dataViewModel: DataViewModel
 
-    private var distanceSelected: Int = 0;
-
     private lateinit var rsDistance: RangeSlider
     private lateinit var tvCustomDistance: TextView
     private lateinit var btnDistance5: ExtendedFloatingActionButton
@@ -100,7 +98,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
         }
     }
 
-    // Sets the value of the time attributes in the model view class
+    // Sets the value of the time attributes in the modelview class
     private fun setTimeValues() {
         if (etHours.text.toString() != "") dataViewModel.setHours(
             etHours.text.toString().toFloat()
