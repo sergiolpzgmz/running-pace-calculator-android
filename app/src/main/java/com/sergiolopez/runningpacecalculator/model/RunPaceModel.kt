@@ -16,11 +16,12 @@ class RunPaceModel(
         return totalMinutes / this.distanceRunSelected
     }
 
-    fun calculateSplitTimes(distanceRunSelected: Int): MutableList<Float> {
-        val resultPace = calculatePace()
+    fun calculateSplitTimes(distance: Int, resultPace: Float): MutableList<Float> {
         val splitTimesList = mutableListOf<Float>()
 
-        for (i in 2..distanceRunSelected) { splitTimesList.add(resultPace * i) }
+        for (i in 2..distance) {
+            splitTimesList.add(resultPace * i)
+        }
 
         return splitTimesList
     }

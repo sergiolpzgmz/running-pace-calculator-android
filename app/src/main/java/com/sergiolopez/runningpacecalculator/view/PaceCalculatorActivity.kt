@@ -3,6 +3,7 @@ package com.sergiolopez.runningpacecalculator.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -103,11 +104,13 @@ class PaceCalculatorActivity : AppCompatActivity() {
         if (etHours.text.toString() != "") dataViewModel.setHours(
             etHours.text.toString().toFloat()
         )
+        else dataViewModel.setMinutes(0f)
 
         if (etMinutes.text.toString() != "") dataViewModel.setMinutes(
             etMinutes.text.toString().toFloat()
         )
         else dataViewModel.setMinutes(0f)
+
         if (etSeconds.text.toString() != "") dataViewModel.setSeconds(
             etSeconds.text.toString().toFloat()
         )
