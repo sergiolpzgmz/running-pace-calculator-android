@@ -13,6 +13,8 @@ import com.sergiolopez.runningpacecalculator.viewModel.DataViewModel
 
 class SplitsViewActivity : AppCompatActivity() {
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SplitsAdapter
     private lateinit var dataViewModel: DataViewModel
 
     private var resultPace = 0f
@@ -24,15 +26,7 @@ class SplitsViewActivity : AppCompatActivity() {
         dataViewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         extractIntent()
-
-
-        dataViewModel.calculateSplitTimes(distanceRun, resultPace)
-        dataViewModel.splitTimesList.observe(this, Observer { result ->
-            result.forEach { r ->
-                Log.d("sergioA", r.toString())
-            }
-
-        })
+        initRecyclerView()
 
     }
 
@@ -40,10 +34,23 @@ class SplitsViewActivity : AppCompatActivity() {
         resultPace = intent.extras?.getFloat(ResultPaceCalculatorActivity.KEY_RESULT_PACE)!!
         distanceRun = intent.extras?.getInt(ResultPaceCalculatorActivity.KEY_RUN_DISTANCE)!!
     }
-    private fun initRecyclerView(){
+
+    private fun initRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.rvSplits)
-        recyclerView.layoutManager=LinearLayoutManager(this)
-        val list = mutableListOf<Float>(1f,2f)
-        recyclerView.adapter=SplitsAdapter(list)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = SplitsAdapter(createSplitTimesList())
+        recyclerView.adapter = adapter
+    }
+
+    private fun createSplitTimesList(): MutableList<Float> {
+        calculateSplitTimes()
+        val list = mutableListOf<Float>()
+        dataViewModel.splitTimesList.observe(this, Observer { result ->
+            result.forEach { r -> list.add(r) }
+        })
+        return list
+    }
+    private fun calculateSplitTimes() {
+        dataViewModel.calculateSplitTimes(distanceRun, resultPace)
     }
 }
