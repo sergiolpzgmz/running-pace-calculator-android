@@ -11,7 +11,7 @@ class DataViewModel : ViewModel() {
     var hours = MutableLiveData<Float>(0f)
     var minutes = MutableLiveData<Float>(0f)
     var seconds = MutableLiveData<Float>(0f)
-    var resultPace = MutableLiveData<Float>(0f)
+    var resultPace = MutableLiveData<Double>(0.0)
     var splitTimesList = MutableLiveData<MutableList<Float>>()
 
     fun setDistanceSelected(distance: Int) {

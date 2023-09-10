@@ -3,7 +3,6 @@ package com.sergiolopez.runningpacecalculator.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -129,7 +128,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
      *
      * @param resultPeace the calculation result of run pace
      */
-    private fun navigateToResultActivity(resultPeace: MutableLiveData<Float>) {
+    private fun navigateToResultActivity(resultPeace: MutableLiveData<Double>) {
         if (dataViewModel.distanceSelected.value == 0) {
             Toast.makeText(this, "Please, select a distance", Toast.LENGTH_SHORT).show()
         } else {
@@ -145,7 +144,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
      *
      * @return encapsulated data
      */
-    private fun bundle(resultPeace: MutableLiveData<Float>): Bundle {
+    private fun bundle(resultPeace: MutableLiveData<Double>): Bundle {
         val bundle = Bundle()
         bundle.putFloat(KEY_RESULT, resultPeace.value!!.toFloat())
         bundle.putInt(KEY_DISTANCE, dataViewModel.distanceSelected.value!!.toInt())

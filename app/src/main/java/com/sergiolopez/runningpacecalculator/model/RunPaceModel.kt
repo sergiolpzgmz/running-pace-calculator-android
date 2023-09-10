@@ -9,11 +9,14 @@ class RunPaceModel(
     var seconds: Float
 
 ) {
-    fun calculatePace(): Float {
-        // Convert all units to minutes
-        val totalMinutes = (this.hours * 60) + this.minutes + (this.seconds / 60)
+    fun calculatePace(): Double {
+            // Convert all units to minutes
+            val totalMinutes = (this.hours * 60) + this.minutes + (this.seconds / 60)
 
-        return totalMinutes / this.distanceRunSelected
+            // Calculate pace in hours per unit of distance
+            val result = totalMinutes / 60.0 / this.distanceRunSelected
+
+            return result
     }
 
     fun calculateSplitTimes(distance: Int, resultPace: Float): MutableList<Float> {

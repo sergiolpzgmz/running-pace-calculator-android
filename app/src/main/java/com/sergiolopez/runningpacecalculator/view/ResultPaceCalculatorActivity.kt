@@ -3,6 +3,7 @@ package com.sergiolopez.runningpacecalculator.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.format.Time
 import android.widget.Button
 import android.widget.TextView
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_HOURS
@@ -10,6 +11,8 @@ import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Compani
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_RESULT
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_SECONDS
 import com.sergiolopez.runningpacecalculator.databinding.ActivityResultPaceCalculatorBinding
+import com.sergiolopez.runningpacecalculator.util.TimeUtils
+import com.sergiolopez.runningpacecalculator.util.TimeUtils.Companion.formatHoursToTimeString
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_DISTANCE
 import java.text.DecimalFormat
 
@@ -77,9 +80,8 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
         result: Float,
         distance: Int,
     ) {
-        val decimalFormat = DecimalFormat("#.##")
-        tvResultPace.text = decimalFormat.format(result)
-        tvResultPaceUnits.text = " min/km"
+        tvResultPace.text = formatHoursToTimeString(result)
+        tvResultPaceUnits.text = " time/km"
 
         if (hours == "") hours = "00"
         if (minutes == "") minutes = "00"
