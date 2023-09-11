@@ -3,7 +3,7 @@ package com.sergiolopez.runningpacecalculator.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.format.Time
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_HOURS
@@ -12,9 +12,9 @@ import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Compani
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_SECONDS
 import com.sergiolopez.runningpacecalculator.databinding.ActivityResultPaceCalculatorBinding
 import com.sergiolopez.runningpacecalculator.util.TimeUtils
-import com.sergiolopez.runningpacecalculator.util.TimeUtils.Companion.formatHoursToTimeString
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_DISTANCE
-import java.text.DecimalFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class ResultPaceCalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultPaceCalculatorBinding
@@ -27,9 +27,9 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
 
     private var resultPace: Float = 0.0f
     private var distanceRun: Int = 0
-    private lateinit var hours: String
-    private lateinit var minutes: String
-    private lateinit var seconds: String
+    private var hours: String = "00"
+    private var minutes: String = "00"
+    private var seconds: String = "00"
 
     companion object {
         const val KEY_RESULT_PACE = "PACE_RESULT"
@@ -43,8 +43,9 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
 
         extractIntent()
         initComponents()
-        initListeners()
         initUI(resultPace, distanceRun)
+        initListeners()
+
     }
 
     // Get the values provided by intent
@@ -58,7 +59,7 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
 
     // Initialises the gui components
     private fun initComponents() {
-        tvResultPace = binding.tvResultPeace
+        tvResultPace = binding.tvResultPace
         tvResultText = binding.tvResultText
         tvResultPaceUnits = binding.tvResultPeaceUnits
         btnRecalculate = binding.btnRecalculate
@@ -71,33 +72,39 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
     }
 
     /**
-     * Displays the result in the new activity based on intent values
+     * Initializes the User Interface in the new activity with calculated result and distance values.
      *
-     * @param result the calculation result of run pace
-     * @param distance distance selected
+     * This function populates the GUI elements with relevant data, including the calculated run pace,
+     * distance selected, and the target time to complete the specified distance. It formats and displays
+     * these values in the appropriate GUI components.
+     *
+     * @param result The calculated result of the run pace in time per kilometer (time/km).
+     * @param distance The distance selected by the user.
      */
-    private fun initUI(
-        result: Float,
-        distance: Int,
-    ) {
-        tvResultPace.text = formatHoursToTimeString(result)
+    private fun initUI(result: Float, distance: Int) {
+        tvResultPace.text = TimeUtils.formatHoursToTimeString(result)
         tvResultPaceUnits.text = " time/km"
 
-        if (hours == "") hours = "00"
-        if (minutes == "") minutes = "00"
-        if (seconds == "") seconds = "00"
 
-        val resultText = "Target pace to complete $distance km in\n$hours h $minutes' $seconds''"
+        val time = TimeUtils.parseStringToTime(hours, minutes, seconds)
+        val resultText = "Target pace to complete $distance km in\n$time"
         tvResultText.text = resultText
-
     }
 
-    // Goes to splits activity with result pace
+    // Navigates to the SplitsViewActivity with the calculated result pace.
     private fun navigateToSplitActivity() {
         val intent = Intent(this, SplitsViewActivity::class.java)
         startActivity(intent.putExtras(bundle()))
     }
 
+    /**
+     * Encapsulates data into a bundle for use in the SplitsViewActivity.
+     *
+     * This function creates a `Bundle` containing the calculated result pace and the selected
+     * run distance to be used in the SplitsViewActivity.
+     *
+     * @return An encapsulated bundle containing the relevant data.
+     */
     private fun bundle(): Bundle {
         val bundle = Bundle()
         bundle.putFloat(KEY_RESULT_PACE, resultPace)
@@ -105,4 +112,6 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
 
         return bundle
     }
+
+
 }

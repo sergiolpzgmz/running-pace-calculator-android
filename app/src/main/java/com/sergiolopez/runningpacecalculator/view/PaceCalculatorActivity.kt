@@ -51,7 +51,6 @@ class PaceCalculatorActivity : AppCompatActivity() {
         initUI()
     }
 
-    // Initialises the gui components
     private fun initComponents() {
         rsDistance = binding.rsDistance
         tvCustomDistance = binding.tvCustomDistance
@@ -68,8 +67,8 @@ class PaceCalculatorActivity : AppCompatActivity() {
 
     private fun initListeners() {
         /*
-        * Gets the value of the range slider
-        * and assigns it to the corresponding attribute in the view model class
+        * Listens for changes in the value of the range slider (`rsDistance`) and
+        * updates the selected distance value in the view model class accordingly.
         */
         rsDistance.addOnChangeListener { _, value, _ ->
             dataViewModel.setDistanceSelected(value.toInt())
@@ -98,25 +97,37 @@ class PaceCalculatorActivity : AppCompatActivity() {
         }
     }
 
-    // Sets the value of the time attributes in the modelview class
+    /**
+     * Sets the values of time attributes in the ViewModel class based on user input.
+     *
+     * This function retrieves user input from the hours, minutes, and seconds input fields
+     * in the GUI and assigns these values to corresponding attributes
+     * in the ViewModel class (`dataViewModel`). If any of the input fields are empty, a default
+     * value of 0.0 is assigned to the respective time attribute in the ViewModel.
+     */
     private fun setTimeValues() {
         if (etHours.text.toString() != "") dataViewModel.setHours(
-            etHours.text.toString().toFloat()
+            etHours.text.toString().toDouble()
         )
-        else dataViewModel.setMinutes(0f)
+        else dataViewModel.setMinutes(0.0)
 
         if (etMinutes.text.toString() != "") dataViewModel.setMinutes(
-            etMinutes.text.toString().toFloat()
+            etMinutes.text.toString().toDouble()
         )
-        else dataViewModel.setMinutes(0f)
+        else dataViewModel.setMinutes(0.0)
 
         if (etSeconds.text.toString() != "") dataViewModel.setSeconds(
-            etSeconds.text.toString().toFloat()
+            etSeconds.text.toString().toDouble()
         )
-        else dataViewModel.setSeconds(0f)
+        else dataViewModel.setSeconds(0.0)
     }
 
-    // Displays the user-selected distance
+    /**
+     * Initializes the User Interface (UI) to display the user-selected distance.
+     *
+     * This function observes changes in the user-selected distance value in the ViewModel (`dataViewModel`)
+     * and updates the GUI element (`tvCustomDistance`) to display the selected distance in kilometers.
+     */
     private fun initUI() {
         dataViewModel.distanceSelected.observe(this, Observer { distance ->
             tvCustomDistance.text = "$distance KM"
@@ -124,9 +135,14 @@ class PaceCalculatorActivity : AppCompatActivity() {
     }
 
     /**
-     * Navigates to the result activity with all user inserted data
+     * Navigates to the result activity with user-inserted data.
      *
-     * @param resultPeace the calculation result of run pace
+     * This function checks if a distance has been selected.
+     * If a distance is not selected, it displays a toast message prompting the user to select a distance.
+     * If a distance is selected, it creates an intent to navigate to the result activity
+     * (`ResultPaceCalculatorActivity`) and includes user-inserted data as extras in the intent bundle.
+     *
+     * @param resultPace The calculated result of the run pace.
      */
     private fun navigateToResultActivity(resultPeace: MutableLiveData<Double>) {
         if (dataViewModel.distanceSelected.value == 0) {
@@ -138,11 +154,13 @@ class PaceCalculatorActivity : AppCompatActivity() {
     }
 
     /**
-     * Encapsulates all the data we get on this screen
+     * Encapsulates all the data collected on this screen into a bundle.
      *
-     * @param resultPeace the calculation result of run pace
+     * This function creates a `Bundle` containing various pieces of user-inserted data,
+     * including the calculated run pace, selected distance, hours, minutes, and seconds.
      *
-     * @return encapsulated data
+     * @param resultPace The calculated result of the run pace.
+     * @return An encapsulated bundle containing the collected data.
      */
     private fun bundle(resultPeace: MutableLiveData<Double>): Bundle {
         val bundle = Bundle()

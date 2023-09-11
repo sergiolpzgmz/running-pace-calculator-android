@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pace Calculator</string>
+    <string name="app_name">Running Pace Calculator</string>
     <string name="choose_distance">Choose distance</string>
     <string name="popular_distance">Popular distances</string>
     <string name="five_distance">5km</string>
