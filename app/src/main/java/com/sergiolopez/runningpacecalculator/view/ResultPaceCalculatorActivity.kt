@@ -82,9 +82,13 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
      * @param distance The distance selected by the user.
      */
     private fun initUI(result: Float, distance: Int) {
-        tvResultPace.text = TimeUtils.formatHoursToTimeString(result)
-        tvResultPaceUnits.text = " time/km"
+        val timeResultString = TimeUtils.formatHoursToTimeString(result)
+        tvResultPace.text = timeResultString
 
+        val resultUnits: String =
+            if (timeResultString <= "00:00:60") " seconds/Km" else if (timeResultString <= "01:00:00") " minutes/Km"
+            else " hours/Km"
+        tvResultPaceUnits.text = resultUnits
 
         val time = TimeUtils.parseStringToTime(hours, minutes, seconds)
         val resultText = "Target pace to complete $distance km in\n$time"
@@ -112,6 +116,4 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
 
         return bundle
     }
-
-
 }

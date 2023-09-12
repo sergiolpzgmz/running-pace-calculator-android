@@ -74,11 +74,17 @@ class SplitsViewActivity : AppCompatActivity() {
 
         dataViewModel.splitTimesList.observe(this) { result ->
             var distance = 1
-            splitTimesList.add(distance.toString() + " KM | " + formatHoursToTimeString(resultPace) + " min")
-            distance++
+            var measuringUnit: String
 
             result.forEach { r ->
-                splitTimesList.add(distance.toString() + " KM | " + formatHoursToTimeString(r) + " min")
+                val time = formatHoursToTimeString(r)
+
+                // Evaluates the result to display in the list hours minutes or seconds
+                measuringUnit =
+                    if (time >= "01:00:00") "hours" else if (time <= "00:00:60") "seconds"
+                    else "minutes"
+
+                splitTimesList.add("$distance KM | $time $measuringUnit")
                 distance++
             }
         }

@@ -15,19 +15,12 @@ class TimeUtils {
          * @return A formatted time string in the format "HH:MM:SS".
          */
         fun formatHoursToTimeString(hours: Float): String {
-            // Calculate the total minutes from the input hours
             val totalMinutes = (hours * 60).toInt()
 
-            // Calculate the formatted hours (HH) by dividing totalMinutes by 60
             val formattedHours = totalMinutes / 60
-
-            // Calculate the formatted minutes (MM) by taking the remainder of totalMinutes when divided by 60
             val formattedMinutes = totalMinutes % 60
-
-            // Calculate the formatted seconds (SS) from the remaining fractional part of the input hours
             val formattedSeconds = ((hours * 3600) % 60).toInt()
 
-            // Return the formatted time string in the "HH:MM:SS" format
             return String.format(
                 "%02d:%02d:%02d",
                 formattedHours,

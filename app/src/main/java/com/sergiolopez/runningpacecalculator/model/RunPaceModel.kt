@@ -36,7 +36,7 @@ class RunPaceModel(
     fun calculateSplitTimes(distance: Int, resultPace: Float): MutableList<Float> {
         val splitTimesList = mutableListOf<Float>()
 
-        for (i in 1 until distance) {
+        for (i in 1..distance) {
             splitTimesList.add(resultPace * i)
         }
         return splitTimesList
