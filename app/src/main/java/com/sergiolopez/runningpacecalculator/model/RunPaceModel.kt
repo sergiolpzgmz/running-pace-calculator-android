@@ -1,10 +1,10 @@
 package com.sergiolopez.runningpacecalculator.model
 
 class RunPaceModel(
-    var distanceRunSelected: Int,
-    var hours: Double,
-    var minutes: Double,
-    var seconds: Double
+    private var distanceRunSelected: Int,
+    private var hours: Double,
+    private var minutes: Double,
+    private var seconds: Double
 
 ) {
     /**
@@ -41,6 +41,4 @@ class RunPaceModel(
         }
         return splitTimesList
     }
-
-
 }
