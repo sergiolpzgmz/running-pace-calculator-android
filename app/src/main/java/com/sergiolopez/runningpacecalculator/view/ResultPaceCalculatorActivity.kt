@@ -19,12 +19,6 @@ import java.time.format.DateTimeFormatter
 class ResultPaceCalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultPaceCalculatorBinding
 
-    private lateinit var tvResultPace: TextView
-    private lateinit var tvResultText: TextView
-    private lateinit var tvResultPaceUnits: TextView
-    private lateinit var btnRecalculate: Button
-    private lateinit var btnSplits: Button
-
     private var resultPace: Float = 0.0f
     private var distanceRun: Int = 0
     private var hours: String = "00"
@@ -42,7 +36,6 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         extractIntent()
-        initComponents()
         initUI(resultPace, distanceRun)
         initListeners()
 
@@ -57,18 +50,9 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
         seconds = intent.extras?.getString(KEY_SECONDS).toString()
     }
 
-    // Initialises the gui components
-    private fun initComponents() {
-        tvResultPace = binding.tvResultPace
-        tvResultText = binding.tvResultText
-        tvResultPaceUnits = binding.tvResultPeaceUnits
-        btnRecalculate = binding.btnRecalculate
-        btnSplits = binding.btnSplits
-    }
-
     private fun initListeners() {
-        btnRecalculate.setOnClickListener { onBackPressed() }
-        btnSplits.setOnClickListener { navigateToSplitActivity() }
+        binding.btnRecalculate.setOnClickListener { onBackPressed() }
+        binding.btnSplits.setOnClickListener { navigateToSplitActivity() }
     }
 
     /**
@@ -83,16 +67,16 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
      */
     private fun initUI(result: Float, distance: Int) {
         val timeResultString = TimeUtils.formatHoursToTimeString(result)
-        tvResultPace.text = timeResultString
+        binding.tvResultPace.text = timeResultString
 
         val resultUnits: String =
             if (timeResultString <= "00:00:60") " seconds/Km" else if (timeResultString <= "01:00:00") " minutes/Km"
             else " hours/Km"
-        tvResultPaceUnits.text = resultUnits
+        binding.tvResultPeaceUnits.text = resultUnits
 
         val time = TimeUtils.parseStringToTime(hours, minutes, seconds)
         val resultText = "Target pace to complete $distance km in\n$time"
-        tvResultText.text = resultText
+        binding.tvResultText.text = resultText
     }
 
     // Navigates to the SplitsViewActivity with the calculated result pace.
