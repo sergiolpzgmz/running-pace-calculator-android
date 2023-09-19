@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Running Pace Calculator</string>
+    <string name="choose_distance">Escoge distancia</string>
+    <string name="popular_distance">Distancias populares</string>
+    <string name="five_distance">5km</string>
+    <string name="ten_distance">10km</string>
+    <string name="tOne_distance">21km</string>
+    <string name="fTwo_distance">42km</string>
+    <string name="custom_distance">Distancia personalizada</string>
+    <string name="choose_time">Escoge tiempo</string>
+    <string name="calculate">calcular</string>
+    <string name="et_hour">HH</string>
+    <string name="et_minutes">MM</string>
+    <string name="et_seconds">SS</string>
+    <string name="rsInitialValue">0KM</string>
+    <string name="result">RESULTADO</string>
+    <string name="recalculate">Recalcular</string>
+    <string name="splits">Splits</string>
+</resources>
