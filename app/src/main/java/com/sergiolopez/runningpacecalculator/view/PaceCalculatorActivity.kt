@@ -1,5 +1,6 @@
 package com.sergiolopez.runningpacecalculator.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.slider.RangeSlider
+import com.sergiolopez.runningpacecalculator.R
 import com.sergiolopez.runningpacecalculator.databinding.ActivityPaceCalculatorBinding
 import com.sergiolopez.runningpacecalculator.viewModel.DataViewModel
 
@@ -101,6 +103,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
         })
     }
 
+
     /**
      * Navigates to the result activity with user-inserted data.
      *
@@ -111,12 +114,12 @@ class PaceCalculatorActivity : AppCompatActivity() {
      *
      * @param resultPace The calculated result of the run pace.
      */
-    private fun navigateToResultActivity(resultPeace: MutableLiveData<Double>) {
-        if (dataViewModel.distanceSelected.value == 0) {
+    private fun navigateToResultActivity(resultPace: MutableLiveData<Double>) {
+        if (dataViewModel.distanceSelected.value?.toInt() == 0) {
             Toast.makeText(this, "Please, select a distance", Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent(this, ResultPaceCalculatorActivity::class.java)
-            startActivity(intent.putExtras(bundle(resultPeace)))
+            startActivity(intent.putExtras(bundle(resultPace)))
         }
     }
 

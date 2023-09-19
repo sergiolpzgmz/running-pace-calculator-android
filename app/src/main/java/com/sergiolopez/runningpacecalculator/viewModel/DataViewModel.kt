@@ -1,5 +1,6 @@
 package com.sergiolopez.runningpacecalculator.viewModel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sergiolopez.runningpacecalculator.model.RunPaceModel
@@ -10,7 +11,7 @@ class DataViewModel : ViewModel() {
     var hours = MutableLiveData<Double>(0.0)
     var minutes = MutableLiveData<Double>(0.0)
     var seconds = MutableLiveData<Double>(0.0)
-    var resultPace = MutableLiveData<Double>(0.0)
+    val resultPace = MutableLiveData<Double>(0.0)
     var splitTimesList = MutableLiveData<MutableList<Float>>()
 
     fun setDistanceSelected(distance: Int) {
