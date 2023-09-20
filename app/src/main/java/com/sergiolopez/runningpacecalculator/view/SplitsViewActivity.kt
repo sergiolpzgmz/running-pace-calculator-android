@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sergiolopez.runningpacecalculator.R
 import com.sergiolopez.runningpacecalculator.databinding.ActivitySplitsViewBinding
 import com.sergiolopez.runningpacecalculator.util.TimeUtils.Companion.formatHoursToTimeString
 import com.sergiolopez.runningpacecalculator.view.adapter.SplitsAdapter
@@ -64,11 +65,14 @@ class SplitsViewActivity : AppCompatActivity() {
 
             result.forEach { r ->
                 val time = formatHoursToTimeString(r)
+                val stringHoursTxt: String = getString(R.string.hours)
+                val stringMinutesTxt: String = getString(R.string.minutes)
+                val stringSecondsTxt: String = getString(R.string.seconds)
 
                 // Evaluates the result to display in the list hours minutes or seconds
                 measuringUnit =
-                    if (time >= "01:00:00") "hours" else if (time <= "00:00:60") "seconds"
-                    else "minutes"
+                    if (time >= "01:00:00") "$stringHoursTxt" else if (time <= "00:00:60") "$stringSecondsTxt"
+                    else "$stringMinutesTxt"
 
                 splitTimesList.add("$distance KM | $time $measuringUnit")
                 distance++

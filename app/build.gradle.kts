@@ -4,6 +4,10 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release_0.1") {
+        }
+    }
     namespace = "com.sergiolopez.runningpacecalculator"
     compileSdk = 33
 

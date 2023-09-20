@@ -17,4 +17,9 @@
     <string name="result">RESULTADO</string>
     <string name="recalculate">Recalcular</string>
     <string name="splits">Splits</string>
+    <string name="seconds">segundos</string>
+    <string name="minutes">minutos</string>
+    <string name="hours">horas</string>
+    <string name="result_txt">"Ritmo objetivo para completar"</string>
+    <string name="result_txt_preposition">"en"</string>
 </resources>
