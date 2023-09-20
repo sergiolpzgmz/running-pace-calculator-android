@@ -16,4 +16,9 @@
     <string name="result">RESULT</string>
     <string name="recalculate">recalculate</string>
     <string name="splits">Splits</string>
+    <string name="seconds">seconds</string>
+    <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
+    <string name="result_txt">"Target pace to complete"</string>
+    <string name="result_txt_preposition">"in"</string>
 </resources>

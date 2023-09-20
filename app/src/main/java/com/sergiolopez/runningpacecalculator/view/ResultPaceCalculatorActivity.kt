@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import com.sergiolopez.runningpacecalculator.R
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_HOURS
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_MINUTES
 import com.sergiolopez.runningpacecalculator.view.PaceCalculatorActivity.Companion.KEY_RESULT
@@ -68,15 +69,31 @@ class ResultPaceCalculatorActivity : AppCompatActivity() {
     private fun initUI(result: Float, distance: Int) {
         val timeResultString = TimeUtils.formatHoursToTimeString(result)
         binding.tvResultPace.text = timeResultString
+        showResultOnScreen(timeResultString, distance)
+    }
+
+
+    /**
+     * Displays the result string the screen with the calculated pace and time for a given distance.
+     *
+     * @param timeResultString A formatted time string in "HH:mm:ss" representing the time taken.
+     * @param distance The distance to complete in kilometers.
+     */
+    private fun showResultOnScreen(timeResultString: String, distance: Int) {
+        val stringHoursTxt: String = getString(R.string.hours)
+        val stringMinutesTxt: String = getString(R.string.minutes)
+        val stringSecondsTxt: String = getString(R.string.seconds)
 
         val resultUnits: String =
-            if (timeResultString <= "00:00:60") " seconds/Km" else if (timeResultString <= "01:00:00") " minutes/Km"
-            else " hours/Km"
+            if (timeResultString <= "00:00:60") " $stringSecondsTxt/Km" else if (timeResultString <= "01:00:00") " $stringMinutesTxt/Km"
+            else " $stringHoursTxt/Km"
         binding.tvResultPeaceUnits.text = resultUnits
 
         val time = TimeUtils.parseStringToTime(hours, minutes, seconds)
-        val resultText = "Target pace to complete $distance km in\n$time"
-        binding.tvResultText.text = resultText
+        val resultTxt: String = getString(R.string.result_txt)
+        val resultTxtPreposition = getString(R.string.result_txt_preposition)
+
+        binding.tvResultText.text = "$resultTxt $distance km $resultTxtPreposition\n$time"
     }
 
     // Navigates to the SplitsViewActivity with the calculated result pace.
