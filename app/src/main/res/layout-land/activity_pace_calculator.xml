@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".view.PaceCalculatorActivity">
+    tools:context=".view.main.PaceCalculatorActivity">
 
     <TextView
         android:id="@+id/tvChooseDistance"
@@ -139,13 +139,13 @@
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:text="@string/choose_time"
         android:textAllCaps="true"
         android:textColor="@color/title_color"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/cvTime" />
+        app:layout_constraintStart_toStartOf="@id/cvTime"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvTime"

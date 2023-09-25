@@ -1,4 +1,4 @@
-package com.sergiolopez.runningpacecalculator.view.adapter
+package com.sergiolopez.runningpacecalculator.view.splits.adapter
 
 import android.view.LayoutInflater
 import android.view.View

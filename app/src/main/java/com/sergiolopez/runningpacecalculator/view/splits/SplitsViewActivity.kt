@@ -1,33 +1,33 @@
-package com.sergiolopez.runningpacecalculator.view
+package com.sergiolopez.runningpacecalculator.view.splits
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sergiolopez.runningpacecalculator.R
 import com.sergiolopez.runningpacecalculator.databinding.ActivitySplitsViewBinding
 import com.sergiolopez.runningpacecalculator.util.TimeUtils.Companion.formatHoursToTimeString
-import com.sergiolopez.runningpacecalculator.view.adapter.SplitsAdapter
-import com.sergiolopez.runningpacecalculator.viewModel.DataViewModel
-import java.text.DecimalFormat
+import com.sergiolopez.runningpacecalculator.view.splits.adapter.SplitsAdapter
+import com.sergiolopez.runningpacecalculator.view.main.PaceCalculatorActivity
+import com.sergiolopez.runningpacecalculator.view.main.PaceCalculatorViewModel
+import com.sergiolopez.runningpacecalculator.view.splits.SplitsViewModel
+import com.sergiolopez.runningpacecalculator.view.result.ResultPaceCalculatorActivity
 
 class SplitsViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplitsViewBinding
 
     private lateinit var adapter: SplitsAdapter
-    private lateinit var dataViewModel: DataViewModel
+    private lateinit var splitsViewModel: SplitsViewModel
 
-    private var resultPace = 0f
+    private var resultPace = 0.0
     private var distanceRun = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplitsViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        dataViewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        splitsViewModel = ViewModelProvider(this)[SplitsViewModel::class.java]
 
         extractIntent()
         initRecyclerView()
@@ -35,7 +35,7 @@ class SplitsViewActivity : AppCompatActivity() {
     }
 
     private fun extractIntent() {
-        resultPace = intent.extras?.getFloat(ResultPaceCalculatorActivity.KEY_RESULT_PACE)!!
+        resultPace = intent.extras?.getDouble(ResultPaceCalculatorActivity.KEY_RESULT_PACE)!!
         distanceRun = intent.extras?.getInt(ResultPaceCalculatorActivity.KEY_RUN_DISTANCE)!!
     }
 
@@ -46,20 +46,18 @@ class SplitsViewActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+
     /**
-     * Creates a list of split times in a user-readable format.
+     * Creates a list of split times in user-readable format
+     * The split times are calculated and observed using the [splitsViewModel].
      *
-     * This function calculates and creates a list of split times based on the calculated result pace
-     * and distance. It observes changes in the split times data from the ViewModel
-     * and formats them into a user-readable format.
-     *
-     * @return A mutable list of split times in the specified format.
+     * @return A mutable list of split times as strings.
      */
     private fun createSplitTimesList(): MutableList<String> {
         calculateSplitTimes()
         val splitTimesList = mutableListOf<String>()
 
-        dataViewModel.splitTimesList.observe(this) { result ->
+        splitsViewModel.splitTimesList.observe(this) { result ->
             var distance = 1
             var measuringUnit: String
 
@@ -82,7 +80,7 @@ class SplitsViewActivity : AppCompatActivity() {
     }
 
     private fun calculateSplitTimes() {
-        dataViewModel.calculateSplitTimes(distanceRun, resultPace)
+        splitsViewModel.calculateSplitTimes(distanceRun, resultPace)
     }
 
     private fun initListeners() {

@@ -1,18 +1,15 @@
-package com.sergiolopez.runningpacecalculator.viewModel
+package com.sergiolopez.runningpacecalculator.view.main
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sergiolopez.runningpacecalculator.model.RunPaceModel
 
-class DataViewModel : ViewModel() {
+class PaceCalculatorViewModel : ViewModel() {
 
     val distanceSelected = MutableLiveData<Int>(0)
     var hours = MutableLiveData<Double>(0.0)
     var minutes = MutableLiveData<Double>(0.0)
     var seconds = MutableLiveData<Double>(0.0)
-    val resultPace = MutableLiveData<Double>(0.0)
-    var splitTimesList = MutableLiveData<MutableList<Float>>()
 
     fun setDistanceSelected(distance: Int) {
         distanceSelected.value = distance
@@ -38,13 +35,4 @@ class DataViewModel : ViewModel() {
 
         return RunPaceModel(distance, hoursValue, minutesValue, secondsValue)
     }
-
-    fun calculatePace() {
-        resultPace.value = createRunPaceObject().calculatePace()
-    }
-
-    fun calculateSplitTimes(distance: Int, resultPace: Float) {
-        splitTimesList.value = createRunPaceObject().calculateSplitTimes(distance, resultPace)
-    }
-
 }
