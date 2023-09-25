@@ -1,29 +1,21 @@
-package com.sergiolopez.runningpacecalculator.view
+package com.sergiolopez.runningpacecalculator.view.main
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.slider.RangeSlider
-import com.sergiolopez.runningpacecalculator.R
 import com.sergiolopez.runningpacecalculator.databinding.ActivityPaceCalculatorBinding
-import com.sergiolopez.runningpacecalculator.viewModel.DataViewModel
+import com.sergiolopez.runningpacecalculator.view.result.ResultPaceCalculatorActivity
 
 class PaceCalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaceCalculatorBinding
-    private lateinit var dataViewModel: DataViewModel
+    private lateinit var dataViewModel: PaceCalculatorViewModel
 
     // Keys associated with the values sent in the bundle
     companion object {
-        const val KEY_RESULT = "PACE_RESULT"
         const val KEY_DISTANCE = "DISTANCE"
         const val KEY_HOURS = "HOURS"
         const val KEY_MINUTES = "MINUTES"
@@ -35,7 +27,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
         binding = ActivityPaceCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        dataViewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        dataViewModel = ViewModelProvider(this)[PaceCalculatorViewModel::class.java]
 
         initListeners()
         initUI()
@@ -68,8 +60,7 @@ class PaceCalculatorActivity : AppCompatActivity() {
 
         binding.btnCalculate.setOnClickListener {
             setTimeValues()
-            dataViewModel.calculatePace()
-            navigateToResultActivity(dataViewModel.resultPace)
+            navigateToResultActivity()
         }
     }
 
@@ -112,14 +103,13 @@ class PaceCalculatorActivity : AppCompatActivity() {
      * If a distance is selected, it creates an intent to navigate to the result activity
      * and includes user-inserted data as extras in the intent bundle.
      *
-     * @param resultPace The calculated result of the run pace.
      */
-    private fun navigateToResultActivity(resultPace: MutableLiveData<Double>) {
+    private fun navigateToResultActivity() {
         if (dataViewModel.distanceSelected.value?.toInt() == 0) {
             Toast.makeText(this, "Please, select a distance", Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent(this, ResultPaceCalculatorActivity::class.java)
-            startActivity(intent.putExtras(bundle(resultPace)))
+            startActivity(intent.putExtras(bundle()))
         }
     }
 
@@ -128,16 +118,14 @@ class PaceCalculatorActivity : AppCompatActivity() {
      *
      * This function creates a `Bundle` containing various pieces of user-inserted data.
      *
-     * @param resultPace The calculated result of the run pace.
-     * @return An encapsulated bundle containing the collected data.
+     * @return an encapsulated bundle containing the collected data.
      */
-    private fun bundle(resultPeace: MutableLiveData<Double>): Bundle {
+    private fun bundle(): Bundle {
         val bundle = Bundle()
-        bundle.putFloat(KEY_RESULT, resultPeace.value!!.toFloat())
         bundle.putInt(KEY_DISTANCE, dataViewModel.distanceSelected.value!!.toInt())
-        bundle.putString(KEY_HOURS, dataViewModel.hours.value.toString())
-        bundle.putString(KEY_MINUTES, dataViewModel.minutes.value.toString())
-        bundle.putString(KEY_SECONDS, dataViewModel.seconds.value.toString())
+        bundle.putDouble(KEY_HOURS, dataViewModel.hours.value!!)
+        bundle.putDouble(KEY_MINUTES, dataViewModel.minutes.value!!)
+        bundle.putDouble(KEY_SECONDS, dataViewModel.seconds.value!!)
 
         return bundle
     }

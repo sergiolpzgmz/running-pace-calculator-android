@@ -33,12 +33,15 @@ class RunPaceModel(
      * @param resultPace The pace in hours per unit of distance.
      * @return A list of race split times in hours.
      */
-    fun calculateSplitTimes(distance: Int, resultPace: Float): MutableList<Float> {
-        val splitTimesList = mutableListOf<Float>()
+    companion object {
+        fun calculateSplitTimes(distance: Int, resultPace: Double): MutableList<Double> {
+            val splitTimesList = mutableListOf<Double>()
 
-        for (i in 1..distance) {
-            splitTimesList.add(resultPace * i)
+            for (i in 1..distance) {
+                splitTimesList.add(resultPace * i)
+            }
+            return splitTimesList
         }
-        return splitTimesList
     }
+
 }

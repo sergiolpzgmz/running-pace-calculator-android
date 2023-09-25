@@ -14,7 +14,7 @@ class TimeUtils {
          * @param hours The input value representing hours.
          * @return A formatted time string in the format "HH:MM:SS".
          */
-        fun formatHoursToTimeString(hours: Float): String {
+        fun formatHoursToTimeString(hours: Double): String {
             val totalMinutes = (hours * 60).toInt()
 
             val formattedHours = totalMinutes / 60

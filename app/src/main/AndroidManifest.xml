@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RunningPaceCalculator">
         <activity
-            android:name=".view.SplitsViewActivity"
+            android:name=".view.splits.SplitsViewActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ResultPaceCalculatorActivity"
+            android:name=".view.result.ResultPaceCalculatorActivity"
             android:exported="false" />
         <activity
-            android:name=".view.PaceCalculatorActivity"
+            android:name=".view.main.PaceCalculatorActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
